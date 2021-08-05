@@ -2,10 +2,8 @@ import { GraphQLClient, gql } from 'graphql-request';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import { getAllPostSlugs, getPost } from '../../lib/posts';
 import Date from '../../components/date';
+import Seo from '../../components/seo';
 import ReactMarkdown from 'react-markdown';
-import Head from 'next/head';
-
-const graphcms = new GraphQLClient(process.env.GRAPHQL_URL_ENDPOINT);
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const slug = params.slug as string;
@@ -56,9 +54,7 @@ export default function Post({
 }) {
   return (
     <>
-      <Head>
-        <title>{post.title} | Personal Blog</title>
-      </Head>
+      <Seo title={post.seo.title} description={post.seo.description} slug={post.slug} isArticle={true} imageUrl={post.cover.url} />
       <article>
         <img
           src={post.cover.url}
@@ -78,7 +74,7 @@ export default function Post({
           <small className='text-sm text-gray-900 font-medium'>
             Tags:
             {post.category.map((category) => (
-              <span className='text-sm text-gray-500 font-light leading-tight mx-1'>
+              <span key={category} className='text-sm text-gray-500 font-light leading-tight mx-1'>
                 {category}
               </span>
             ))}
