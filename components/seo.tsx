@@ -1,6 +1,5 @@
-import Head from 'next/head';
+import { NextSeo } from 'next-seo';
 
-// TODO: implement SEO component
 export default function Seo(
   props: {
     title: string
@@ -12,37 +11,29 @@ export default function Seo(
   const url = process.env.PAGE_URL_ENDPOINT as string;
   const location = `${url}/${props.slug}`
   return (
-    <Head>
-      <title>{props.title} | My blog</title>
-      <link rel='icon' href='/favicon.ico' />
-      <meta name="description" content={props.description} />
-      <meta name="image" content={props.imageUrl} />
-
-      {location && <meta property="og:url" content={location} />}
-
-      {(props.isArticle ? true : null) && (
-        <meta property="og:type" content="article" />
-      )}
-
-      {props.title && <meta property="og:title" content={props.title} />}
-
-      {props.description && (
-        <meta property="og:description" content={props.description} />
-      )}
-
-      {props.imageUrl && <meta property="og:image" content={props.imageUrl} />}
-
-      <meta name="twitter:card" content="summary_large_image" />
-
-      <meta name="twitter:creator" content="@yenniferha" />
-
-      {props.title && <meta name="twitter:title" content={props.title} />}
-
-      {props.description && (
-        <meta name="twitter:description" content={props.description} />
-      )}
-
-      {props.imageUrl && <meta name="twitter:image" content={props.imageUrl} />}
-    </Head>
+    <NextSeo
+      titleTemplate='%s| My blog'
+      title={props.title}
+      defaultTitle='My blog'
+      description={props.description}
+      canonical={url}
+      additionalLinkTags={[
+        {
+          rel: 'icon',
+          href: '/favicon.ico',
+        }
+      ]}
+      openGraph={{
+        url: url,
+        title: "My blog",
+        description: "Informative articles about web development. Find tutorials that will boost your next web development project.",
+        site_name: 'My Blog',
+      }}
+      twitter={{
+        handle: '@yenniferha',
+        site: '@yenniferha',
+        cardType: 'summary_large_image',
+      }}
+    />
   )
 }
